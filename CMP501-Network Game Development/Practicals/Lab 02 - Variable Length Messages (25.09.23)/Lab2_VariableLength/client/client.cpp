@@ -77,37 +77,30 @@ int main()
 
 	// We'll use this buffer to hold what we receive from the server.
 	char buffer[MESSAGESIZE];
-	char* buffer1 = new char[5];
+	char* buffer1 = new char[sizeof(int)];
 
 	while (true)
 	{
 		printf("Type some text (\"quit\" to exit): ");
 		fflush(stdout);
 
-		// Read a line of text from the user.
+		// Read a line of text from the user.a
 		std::string line;
 		std::getline(std::cin, line);
 		// Now "line" contains what the user typed (without the trailing \n).
 
-		int byteSize = line.size();
-		buffer1 = new char[byteSize];
-
 		// Copy the line into the buffer, filling the rest with dashes.
 		// (We must be careful not to write past the end of the array.)
-		// line.append("¬");
-		memset(buffer1, '-', byteSize);
-		memcpy(buffer1, line.c_str(), byteSize);
 
-		send(sock, buffer1, byteSize, 0);
-
-		// Send the message to the server.
-		if (send(sock, buffer1, byteSize, 0) != MESSAGESIZE)
-		{
-			die("send failed");
-		}
+		// memset(buffer1, '-', sizeof(int));
+		memcpy(buffer1, std::to_string(line.size()).c_str(), sizeof(int));
+		send(sock, buffer1, sizeof(int), 0);
+		buffer1 = new char[line.size()];
+		memcpy(buffer1, line.c_str(), line.size());
+		send(sock, buffer1, line.size(), 0);
 
 		// Read a response back from the server.
-		int count = recv(sock, buffer, MESSAGESIZE, MSG_WAITALL);
+		int count = recv(sock, buffer1, line.size(), MSG_WAITALL);
 		if (count <= 0)
 		{
 			printf("Server closed connection\n");
@@ -115,8 +108,42 @@ int main()
 		}
 
 		printf("Received %d bytes from the server: '", count);
-		fwrite(buffer, 1, count, stdout);
+		fwrite(buffer1, 1, count, stdout);
 		printf("'\n");
+		
+
+		// if(line.size() > MESSAGESIZE)
+		// {
+		// 	std::string newLine = std::to_string(line.size()).append("|");
+		// 	newLine += line;
+		// 	buffer1 = new char[line.size()];
+		// 	
+		// 	memset(buffer1, '-', line.size());
+		// 	memcpy(buffer1, newLine.c_str(), line.size());
+		// }
+		// else
+		// {
+		// 	memset(buffer, '-', MESSAGESIZE);
+		// 	memcpy(buffer, newLine.c_str(), min(line.size(), MESSAGESIZE));
+		// }
+
+		// Send the message to the server.
+		// if (send(sock, buffer1, MESSAGESIZE, 0) != MESSAGESIZE)
+		// {
+		// 	die("send failed");
+		// }
+
+		// // Read a response back from the server.
+		// int count = recv(sock, buffer, MESSAGESIZE, MSG_WAITALL);
+		// if (count <= 0)
+		// {
+		// 	printf("Server closed connection\n");
+		// 	break;
+		// }
+		//
+		// printf("Received %d bytes from the server: '", count);
+		// fwrite(buffer, 1, count, stdout);
+		// printf("'\n");
 	}
 
 	printf("Quitting\n");

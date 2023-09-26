@@ -29,6 +29,7 @@
 // Prototypes
 void talk_to_client(SOCKET clientSocket); 
 void die(const char *message);
+void ReceiveErrorCheck(int count, int byteSize, char buffer[]);
 
 
 int main()
@@ -117,18 +118,20 @@ int main()
 void talk_to_client(SOCKET clientSocket)
 {
 	char buffer[MESSAGESIZE];
-	const char* buffer1;
+	char* buffer1 = new char[sizeof(int)];
+	bool knowsLength = false;
 
 	while (true)
 	{
-		// Receive as much data from the client as will fit in the buffer.
-		int count = recv(clientSocket, buffer, MESSAGESIZE, MSG_WAITALL);
+		int count = recv(clientSocket, buffer1, sizeof(int), MSG_WAITALL);
+		//ReceiveErrorCheck(count, sizeof(int), buffer1);
+		
 		if (count <= 0)
 		{
 			printf("Client closed connection\n");
 			return;
 		}
-		if (count != MESSAGESIZE)
+		if (count != sizeof(int))
 		{
 			printf("Got strange-sized message from client\n");
 			return;
@@ -139,20 +142,109 @@ void talk_to_client(SOCKET clientSocket)
 			return;
 		}
 
-		// (Note that recv will not write a \0 at the end of the message it's
-		// received -- so we can't just use it as a C-style string directly
-		// without writing the \0 ourself.)
+		std::string byteSize = "";
+		for(int i=0; i<sizeof(int); i++)
+		{
+			byteSize+=buffer1[i];
+		}
+		
+		buffer1 = new char[std::stoi(byteSize)];
+		count = recv(clientSocket, buffer1, std::stoi(byteSize), MSG_WAITALL);
+		//ReceiveErrorCheck(count, std::stoi(byteSize), buffer1);
+		
+		if (count <= 0)
+		{
+			printf("Client closed connection\n");
+			return;
+		}
+		if (count != std::stoi(byteSize))
+		{
+			printf("Got strange-sized message from client\n");
+			return;
+		}
+		if (memcmp(buffer, "quit", 4) == 0)
+		{
+			printf("Client asked to quit\n");
+			return;
+		}
 
 		printf("Received %d bytes from the client: '", count);
-		fwrite(buffer, 1, count, stdout);
+		fwrite(buffer1, 1, count, stdout);
 		printf("'\n");
 
 		// Send the same data back to the client.
-		if (send(clientSocket, buffer, MESSAGESIZE, 0) != MESSAGESIZE)
+		if (send(clientSocket, buffer1, std::stoi(byteSize), 0) != std::stoi(byteSize))
 		{
 			printf("send failed\n");
 			return;
 		}
+		
+		// Receive as much data from the client as will fit in the buffer.
+		// int count = recv(clientSocket, buffer, sizeof(int), MSG_WAITALL);
+		// std::string byteSize = "";
+
+		// for(int i=0; i<MESSAGESIZE; i++)
+		// {
+		// 	if(buffer[i]=='|')
+		// 	{
+		// 		break;
+		// 	}
+		// 	byteSize+=buffer[i];
+		// }
+		
+		// buffer1 = new char[std::stoi(byteSize)];
+
+		// if (count <= 0)
+		// {
+		// 	printf("Client closed connection\n");
+		// 	return;
+		// }
+		// if (count != MESSAGESIZE)
+		// {
+		// 	printf("Got strange-sized message from client\n");
+		// 	return;
+		// }
+		// if (memcmp(buffer, "quit", 4) == 0)
+		// {
+		// 	printf("Client asked to quit\n");
+		// 	return;
+		// }
+
+		// (Note that recv will not write a \0 at the end of the message it's
+		// received -- so we can't just use it as a C-style string directly
+		// without writing the \0 ourself.)
+
+		//printf("%s \n", (std::string)byteSize);
+		
+		// printf("Received %d bytes from the client: '", count);
+		// fwrite(buffer, 1, count, stdout);
+		// printf("'\n");
+		//
+		// // Send the same data back to the client.
+		// if (send(clientSocket, buffer, MESSAGESIZE, 0) != MESSAGESIZE)
+		// {
+		// 	printf("send failed\n");
+		// 	return;
+		// }
+	}
+}
+
+void ReceiveErrorCheck(int count, int byteSize, char buffer[])
+{
+	if (count <= 0)
+	{
+		printf("Client closed connection\n");
+		return;
+	}
+	if (count != byteSize)
+	{
+		printf("Got strange-sized message from client\n");
+		return;
+	}
+	if (memcmp(buffer, "quit", 4) == 0)
+	{
+		printf("Client asked to quit\n");
+		return;
 	}
 }
 
