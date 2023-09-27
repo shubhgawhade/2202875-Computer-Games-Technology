@@ -260,9 +260,10 @@ void Game::Render()
     // Circle
     float radius = 3;
     int sides = 3;
+    float angle = 360 / sides;
 
-    const int vCountCircle = 6;
-    const int iCountCircle = 6;
+    const int vCountCircle = 9;
+    const int iCountCircle = 9;
     uint16_t iArrayCircle[iCountCircle];
     VertexPositionColor vArrayCircle[vCountCircle];
     
@@ -270,13 +271,19 @@ void Game::Render()
     {
         iArrayCircle[i] = i;
     }
-    
+
     vArrayCircle[0] = VertexPositionColor(Vector3(0.f, 0.f, 0.5f), Colors::Red);
-    vArrayCircle[1] = VertexPositionColor(Vector3(radius * cos(XMConvertToRadians(360 / 1)), radius * sin(XMConvertToRadians(360 / 1)), 0.5f), Colors::Red);
-    vArrayCircle[2] = VertexPositionColor(Vector3(radius * cos(XMConvertToRadians(360 / 12)), radius * sin(XMConvertToRadians(360 / 12)), 0.5f), Colors::Red);
+    vArrayCircle[1] = VertexPositionColor(Vector3(radius * cos(XMConvertToRadians(angle)), radius * sin(XMConvertToRadians(angle)), 0.5f), Colors::Red);
+    angle += 360 / sides;
+    vArrayCircle[2] = VertexPositionColor(Vector3(radius * cos(XMConvertToRadians(angle)), radius * sin(XMConvertToRadians(angle)), 0.5f), Colors::Red);
     vArrayCircle[3] = VertexPositionColor(Vector3(0.f, 0.f, 0.5f), Colors::Red);
-    vArrayCircle[4] = VertexPositionColor(Vector3(radius * cos(XMConvertToRadians(360 / 12)), radius * sin(XMConvertToRadians(360 / 12)), 0.5f), Colors::Red);
-    vArrayCircle[5] = VertexPositionColor(Vector3(radius * cos(XMConvertToRadians(360 / 6)), radius * sin(XMConvertToRadians(360 / 6)), 0.5f), Colors::Red);
+    vArrayCircle[4] = VertexPositionColor(Vector3(radius * cos(XMConvertToRadians(angle)), radius * sin(XMConvertToRadians(angle)), 0.5f), Colors::Red);
+    angle += 360 / sides;
+    vArrayCircle[5] = VertexPositionColor(Vector3(radius * cos(XMConvertToRadians(angle)), radius * sin(XMConvertToRadians(angle)), 0.5f), Colors::Red);
+    vArrayCircle[6] = VertexPositionColor(Vector3(0.f, 0.f, 0.5f), Colors::Red);
+    vArrayCircle[7] = VertexPositionColor(Vector3(radius * cos(XMConvertToRadians(angle)), radius * sin(XMConvertToRadians(angle)), 0.5f), Colors::Red);
+    angle += 360 / sides;
+    vArrayCircle[8] = VertexPositionColor(Vector3(radius * cos(XMConvertToRadians(angle)), radius * sin(XMConvertToRadians(angle)), 0.5f), Colors::Red);
 
     //const int vCountCircle = 6;
     //const int iCountCircle = 6;
