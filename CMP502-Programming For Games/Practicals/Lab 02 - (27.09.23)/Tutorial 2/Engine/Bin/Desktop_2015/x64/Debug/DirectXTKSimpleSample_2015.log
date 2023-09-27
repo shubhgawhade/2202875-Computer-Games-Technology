@@ -1,2 +1,4 @@
 ﻿  Game.cpp
+M:\MSc\2202875-Computer-Games-Technology\CMP502-Programming For Games\Practicals\Lab 02 - (27.09.23)\Tutorial 2\Engine\Game.cpp(263,42): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+M:\MSc\2202875-Computer-Games-Technology\CMP502-Programming For Games\Practicals\Lab 02 - (27.09.23)\Tutorial 2\Engine\Game.cpp(281,41): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
   DirectXTKSimpleSample_2015.vcxproj -> M:\MSc\2202875-Computer-Games-Technology\CMP502-Programming For Games\Practicals\Lab 02 - (27.09.23)\Tutorial 2\Engine\Bin\Desktop_2015\x64\Debug\DirectXTKSimpleSample_2015.exe

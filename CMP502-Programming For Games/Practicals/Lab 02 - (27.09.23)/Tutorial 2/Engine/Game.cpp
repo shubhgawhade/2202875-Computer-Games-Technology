@@ -258,49 +258,29 @@ void Game::Render()
     //m_batch->DrawIndexed(D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST, iArrayStarBottom, iCountStarBottom, vArrayStarBottom, vCountStarBottom);
 
     // Circle
-    float radius = 3;
-    int sides = 3;
-    float angle = 360 / sides;
+    float radius = 1;
+    int sides = 24;
+    float angle = XMConvertToRadians(360 / sides);
 
-    const int vCountCircle = 9;
-    const int iCountCircle = 9;
-    uint16_t iArrayCircle[iCountCircle];
-    VertexPositionColor vArrayCircle[vCountCircle];
+    const int vCountCircle = 3 * sides;
+    const int iCountCircle = 3 * sides;
+    uint16_t* iArrayCircle;
+    VertexPositionColor* vArrayCircle;
+    iArrayCircle = new uint16_t[iCountCircle];
+    vArrayCircle = new VertexPositionColor[vCountCircle];
     
     for (int i = 0; i < iCountCircle; i++)
     {
         iArrayCircle[i] = i;
     }
 
-    vArrayCircle[0] = VertexPositionColor(Vector3(0.f, 0.f, 0.5f), Colors::Red);
-    vArrayCircle[1] = VertexPositionColor(Vector3(radius * cos(XMConvertToRadians(angle)), radius * sin(XMConvertToRadians(angle)), 0.5f), Colors::Red);
-    angle += 360 / sides;
-    vArrayCircle[2] = VertexPositionColor(Vector3(radius * cos(XMConvertToRadians(angle)), radius * sin(XMConvertToRadians(angle)), 0.5f), Colors::Red);
-    vArrayCircle[3] = VertexPositionColor(Vector3(0.f, 0.f, 0.5f), Colors::Red);
-    vArrayCircle[4] = VertexPositionColor(Vector3(radius * cos(XMConvertToRadians(angle)), radius * sin(XMConvertToRadians(angle)), 0.5f), Colors::Red);
-    angle += 360 / sides;
-    vArrayCircle[5] = VertexPositionColor(Vector3(radius * cos(XMConvertToRadians(angle)), radius * sin(XMConvertToRadians(angle)), 0.5f), Colors::Red);
-    vArrayCircle[6] = VertexPositionColor(Vector3(0.f, 0.f, 0.5f), Colors::Red);
-    vArrayCircle[7] = VertexPositionColor(Vector3(radius * cos(XMConvertToRadians(angle)), radius * sin(XMConvertToRadians(angle)), 0.5f), Colors::Red);
-    angle += 360 / sides;
-    vArrayCircle[8] = VertexPositionColor(Vector3(radius * cos(XMConvertToRadians(angle)), radius * sin(XMConvertToRadians(angle)), 0.5f), Colors::Red);
-
-    //const int vCountCircle = 6;
-    //const int iCountCircle = 6;
-    //uint16_t iArrayCircle[iCountCircle];
-    //VertexPositionColor vArrayCircle[vCountCircle];
-    //
-    //float angle = 0;
-    //for (int i = 0; i < vCountCircle;)
-    //{
-    //    angle += XMConvertToRadians(360 / sides);
-    //    vArrayCircle[i++] = VertexPositionColor(Vector3(0.f, 0.f, 0.5f), Colors::Red);
-    //    vArrayCircle[i++] = VertexPositionColor(Vector3(radius * cos(angle), radius * sin(angle), 0.5f), Colors::Red);
-    //    vArrayCircle[i++] = VertexPositionColor(Vector3(radius * cos(angle), radius * sin(angle), 0.5f), Colors::Red);
-    //
-    //    //iArrayCircle[i] = i;
-    //    //vArrayCircle[i] = VertexPositionColor(Vector3(radius * cos(360/i), radius * sin(360 / i), 0.5f), Colors::Red);
-    //}
+    for (int i = 0; i < vCountCircle;)
+    {
+        vArrayCircle[i++] = VertexPositionColor(Vector3(0.f, 0.f, 0.5f), Colors::Red);
+        vArrayCircle[i++] = VertexPositionColor(Vector3(radius * cos(angle), radius * sin(angle), 0.5f), Colors::Red);
+        angle += XMConvertToRadians(360 / sides);
+        vArrayCircle[i++] = VertexPositionColor(Vector3(radius * cos(angle), radius * sin(angle), 0.5f), Colors::Red);
+    }
 
     m_batch->DrawIndexed(D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST, iArrayCircle, iCountCircle, vArrayCircle, vCountCircle);
 
