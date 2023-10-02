@@ -1,24 +1,24 @@
-#include <SFML/Graphics.hpp>
+#include <iostream>
+#include <string.h>
+#include <SFML/Network.hpp>
+
+// ----- The server -----
 
 int main()
 {
-    sf::RenderWindow window(sf::VideoMode(200, 200), "SFML works!");
-    sf::CircleShape shape(100.f);
-    shape.setFillColor(sf::Color::Green);
+	// Create a socket and bind it to the port 55002
+	sf::UdpSocket socket;
+	socket.bind(55002);
 
-    while (window.isOpen())
-    {
-        sf::Event event;
-        while (window.pollEvent(event))
-        {
-            if (event.type == sf::Event::Closed)
-                window.close();
-        }
+	// Receive a message from anyone
+	char buffer[1024];
+	std::size_t received = 0;
+	sf::IpAddress sender;
+	unsigned short port;
+	socket.receive(buffer, sizeof(buffer), received, sender, port);
+	std::cout << sender << " said: " << buffer << std::endl;
 
-        window.clear();
-        window.draw(shape);
-        window.display();
-    }
-
-    return 0;
+	// Send an answer
+	std::string message = "Welcome " + sender.toString();
+	socket.send(message.c_str(), message.size() + 1, sender, port);
 }
