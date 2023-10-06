@@ -23,7 +23,7 @@ Initial set up
 #Hyperparameters
 SMALL_ENOUGH = 0.05
 GAMMA = 0.9         
-NOISE = 0.7  
+NOISE = 0.2  
 
 #Define all states
 all_states=[]
