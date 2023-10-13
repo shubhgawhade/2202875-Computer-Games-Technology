@@ -24,11 +24,11 @@ public class Decorator : SelectorNode
             State childState = child.RunNode();
 
             // If the child node stops running, reset the timer and update the decorator with the child nodes state
-            // if(childState != State.RUNNING)
-            // {
-            //     this.state = childState;
-            //     elapsedTime = 0f;
-            // }
+            if(childState != State.RUNNING)
+            {
+                this.state = childState;
+                elapsedTime = 0f;
+            }
         }
         else
         {

@@ -8,7 +8,7 @@ using UnityEngine;
 public class PrintDebugLeafNode : TreeNode
 {
     [SerializeField] string message = "";
-    [SerializeField] float waitTime = 2f;
+    [SerializeField] float waitTime = 5f;
     private float elapsedTime = 0f;
 
     protected override void NodeFunction()
