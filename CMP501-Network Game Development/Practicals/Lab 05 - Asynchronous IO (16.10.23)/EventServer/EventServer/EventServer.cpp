@@ -124,7 +124,7 @@ int main()
 		if (clientCount > 0) {
 
 			int i = 0;
-			for (i = 0; i < 3;)
+			for (i = 0; i < clientCount;)
 			{
 				returnVal = WSAWaitForMultipleEvents(1, &AcceptEvent[i], false, 0, false);
 				if ((returnVal != WSA_WAIT_TIMEOUT) && (returnVal != WSA_WAIT_FAILED)) {
@@ -150,7 +150,7 @@ int main()
 				else if (returnVal == WSA_WAIT_FAILED) {
 					die("WSAWaitForMultipleEvents failed!");
 				}
-				i++;
+				++i;
 			}
 
 			//returnVal = WSAWaitForMultipleEvents(1, &AcceptEvent, false, 0, false);
@@ -185,9 +185,16 @@ void CleanupSocket(int client) {
 
 	if (closesocket(AcceptSocket[client]) != SOCKET_ERROR) {
 		printf("Successfully closed socket %d\n", AcceptSocket[client]);
+		clientCount--;
 	}
 	if (WSACloseEvent(AcceptEvent[client]) == false) {
 		die("WSACloseEvent() failed");
 	}
-	clientCount = 0;
+
+	while (client < clientCount)
+	{
+		AcceptSocket[client] = AcceptSocket[client + 1];
+		AcceptEvent[client] = AcceptEvent[client + 1];
+		client++;
+	}
 }
