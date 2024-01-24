@@ -444,8 +444,12 @@ void Terrain::RandomHeightField()
 		{
 			index = (m_terrainHeight * j) + i;
 
+			int randomHeightInt = rand() % (int)m_maxHeight;
+			int randomHeightFloat = rand() % 10;
+			float randomHeight = randomHeightInt + (float)randomHeightFloat / 10;
+
 			m_heightMap[index].x = (float)i;
-			m_heightMap[index].y = rand() % (int)m_maxHeight + (float)(rand() % 10/10);
+			m_heightMap[index].y = randomHeight;
 			m_heightMap[index].z = (float)j;
 		}
 	}

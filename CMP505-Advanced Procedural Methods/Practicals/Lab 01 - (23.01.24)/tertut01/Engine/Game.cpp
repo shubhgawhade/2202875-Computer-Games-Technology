@@ -409,7 +409,7 @@ void Game::SetupGUI()
 	ImGui::Begin("Sin Wave Parameters");
 		ImGui::SliderFloat("Wave Amplitude",	m_Terrain.GetAmplitude(), 0.0f, 10.0f);
 		ImGui::SliderFloat("Wavelength",		m_Terrain.GetWavelength(), 0.0f, 1.0f);
-		ImGui::SliderFloat("Max Height",		m_Terrain.GetMaxHeight(), 0.0f, 50.0f);
+		ImGui::SliderFloat("Max Height",		m_Terrain.GetMaxHeight(), 1.0f, 50.0f);
 	ImGui::End();
 }
 
