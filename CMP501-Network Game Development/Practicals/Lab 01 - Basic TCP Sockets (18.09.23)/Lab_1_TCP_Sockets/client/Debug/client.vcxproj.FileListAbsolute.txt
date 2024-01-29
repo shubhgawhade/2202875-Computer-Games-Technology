@@ -1,3 +1,0 @@
-D:\Work\Abertay\CMP303\Lab2\Lab2\client\Debug\client.exe
-D:\Work\Abertay\CMP303\Lab2\Lab2\client\Debug\client.pdb
-D:\ABERTAY\MSc\2202875\CMP501-Network Game Development\Practicals\Lab 01 - Basic TCP Sockets (18.09.23)\Lab_1_TCP_Sockets\client\Debug\client.exe

@@ -1,0 +1,4 @@
+﻿  EventServer.cpp
+C:\Users\Mini\source\repos\CMP303\Events\EventServer\EventServer\EventServer.cpp(46,10): warning C4101: 'ip': unreferenced local variable
+C:\Users\Mini\source\repos\CMP303\Events\EventServer\EventServer\EventServer.cpp(41,10): warning C4101: 'Buffer': unreferenced local variable
+  EventServer.vcxproj -> C:\Users\Mini\source\repos\CMP303\Events\EventServer\Debug\EventServer.exe
