@@ -166,7 +166,7 @@ void Game::Update(DX::StepTimer const& timer)
 
 	if (m_gameInputCommands.generate)
 	{
-		m_Terrain.GenerateHeightMap(device);
+		m_Terrain.Generate(device);
 	}
 
 	if(m_gameInputCommands.smoothLevel)
@@ -403,6 +403,7 @@ void Game::CreateWindowSizeDependentResources()
         100.0f
     );
 }
+int e = 0;
 
 void Game::SetupGUI()
 {
@@ -410,12 +411,41 @@ void Game::SetupGUI()
 	ImGui_ImplDX11_NewFrame();
 	ImGui_ImplWin32_NewFrame();
 	ImGui::NewFrame();
+	ImGui::Begin("SELECT GENERATION METHOD");
 
-	ImGui::Begin("Sin Wave Parameters");
+	ImGui::RadioButton("Wave", &e, 0);
+	ImGui::RadioButton("Random Height Field", &e, 1);
+	ImGui::RadioButton("Faulting", &e, 2);
+	ImGui::RadioButton("Particle Deposition", &e, 3);
+
+	ImGui::NewLine();
+	ImGui::Separator();
+	ImGui::Separator();
+	
+	ImGui::Text("Selection Parameters");
+	ImGui::NewLine();
+	
+	if(e==0)
+	{
+		// ImGui::Begin("Wave Parameters");
 		ImGui::SliderFloat("Wave Amplitude",	m_Terrain.GetAmplitude(), 0.0f, 10.0f);
 		ImGui::SliderFloat("Wavelength",		m_Terrain.GetWavelength(), 0.0f, 1.0f);
+		// ImGui::End();
+	}
+	else if(e==1)
+	{
+		// ImGui::Begin("Random Height Parameters");
 		ImGui::SliderFloat("Max Height",		m_Terrain.GetMaxHeight(), 1.0f, 50.0f);
+		// ImGui::End();
+	}
+
 	ImGui::End();
+	
+	if(e != m_Terrain.generationType)
+	{
+		m_Terrain.generationType = e;
+	}
+	
 }
 
 

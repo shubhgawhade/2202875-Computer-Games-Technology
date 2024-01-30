@@ -394,32 +394,22 @@ void Terrain::RenderBuffers(ID3D11DeviceContext * deviceContext)
 	return;
 }
 
-bool Terrain::GenerateHeightMap(ID3D11Device* device)
+bool Terrain::Generate(ID3D11Device* device)
 {
 	bool result;
 
-	int index;
-	float height = 0.0;
-
-	m_frequency = (6.283/m_terrainHeight) / m_wavelength; //we want a wavelength of 1 to be a single wave over the whole terrain.  A single wave is 2 pi which is about 6.283
-
-	//loop through the terrain and set the heights how we want. This is where we generate the terrain
-	//in this case I will run a sin-wave through the terrain in one axis.
-
-	RandomHeightField();
-
-	//for (int j = 0; j < m_terrainHeight; j++)
-	//{
-	//	for (int i = 0; i < m_terrainWidth; i++)
-	//	{
-	//		index = (m_terrainHeight * j) + i;
-
-	//		m_heightMap[index].x = (float)i;
-	//		//m_heightMap[index].x = (float)(cos((float)i * (m_frequency)) * m_amplitude);
-	//		m_heightMap[index].y = (float)(sin((float)i * (m_frequency)) * m_amplitude);
-	//		m_heightMap[index].z = (float)j;
-	//	}
-	//}
+	if(generationType == 0)
+	{
+		GenerateWaves();
+	}
+	else if(generationType == 1)
+	{
+		RandomHeightField();
+	}
+	else if(generationType == 2)
+	{
+		Faulting();
+	}
 
 	result = CalculateNormals();
 	if (!result)
@@ -431,6 +421,30 @@ bool Terrain::GenerateHeightMap(ID3D11Device* device)
 	if (!result)
 	{
 		return false;
+	}
+}
+
+void Terrain::GenerateWaves()
+{
+	int index;
+	float height = 0.0;
+
+	m_frequency = (6.283/m_terrainHeight) / m_wavelength; //we want a wavelength of 1 to be a single wave over the whole terrain.  A single wave is 2 pi which is about 6.283
+
+	//loop through the terrain and set the heights how we want. This is where we generate the terrain
+	//in this case I will run a sin-wave through the terrain in one axis.
+	
+	for (int j = 0; j < m_terrainHeight; j++)
+	{
+		for (int i = 0; i < m_terrainWidth; i++)
+		{
+			index = (m_terrainHeight * j) + i;
+
+			m_heightMap[index].x = (float)i;
+			//m_heightMap[index].x = (float)(cos((float)i * (m_frequency)) * m_amplitude);
+			m_heightMap[index].y = (float)(sin((float)i * (m_frequency)) * m_amplitude);
+			m_heightMap[index].z = (float)j;
+		}
 	}
 }
 
@@ -460,6 +474,29 @@ void Terrain::RandomHeightField()
 
 	// calculates the average height
 	averageHeight/=index;
+}
+
+void Terrain::Faulting()
+{
+	SimpleMath::Vector2 dir = SimpleMath::Vector2(2,2) - SimpleMath::Vector2(5,5);
+	dir.Normalize();
+
+	int index;
+	
+	for (int j = 0; j < m_terrainHeight; j++)
+	{
+		for (int i = 0; i < m_terrainWidth; i++)
+		{
+			index = (m_terrainHeight * j) + i;
+
+			SimpleMath::Vector2 dir1 = SimpleMath::Vector2(5,5) - SimpleMath::Vector2(m_heightMap[index].x, m_heightMap[index].z);
+			dir1.Normalize();
+			if(dir.Dot(dir1) > 0.5f)
+			{
+				m_heightMap[index].y = 1.5f;
+			}
+		}
+	}
 }
 
 bool Terrain::SmoothLevel(ID3D11Device* device)

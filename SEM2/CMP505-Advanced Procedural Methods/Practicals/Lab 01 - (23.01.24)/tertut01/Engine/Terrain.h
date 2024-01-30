@@ -21,9 +21,11 @@ public:
 	Terrain();
 	~Terrain();
 
+	int generationType = 0;
+
 	bool Initialize(ID3D11Device*, int terrainWidth, int terrainHeight);
 	void Render(ID3D11DeviceContext*);
-	bool GenerateHeightMap(ID3D11Device*);
+	bool Generate(ID3D11Device*);
 	bool SmoothLevel(ID3D11Device*);
 	void RandomHeightField();
 	bool Update();
@@ -38,7 +40,8 @@ private:
 	void ShutdownBuffers();
 	bool InitializeBuffers(ID3D11Device*);
 	void RenderBuffers(ID3D11DeviceContext*);
-	
+	void Faulting();
+	void GenerateWaves();
 
 private:
 	bool m_terrainGeneratedToggle;
