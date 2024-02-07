@@ -1,6 +1,8 @@
 #include "pch.h"
 #include "Terrain.h"
 
+#include "ClassicPerlinNoiseAlgorithm.h"
+
 
 Terrain::Terrain()
 {
@@ -26,6 +28,8 @@ bool Terrain::Initialize(ID3D11Device* device, int terrainWidth, int terrainHeig
 	m_amplitude = 3.0;
 	m_wavelength = 1;
 	m_maxHeight = 1.0f;
+	m_scale = .1f;
+	m_offset = 0;
 
 	// Create the structure to hold the terrain data.
 	m_heightMap = new HeightMapType[m_terrainWidth * m_terrainHeight];
@@ -410,7 +414,15 @@ bool Terrain::Generate(ID3D11Device* device)
 	{
 		Faulting();
 	}
-
+	else if(generationType == 3)
+	{
+		
+	}
+	else if(generationType == 4)
+	{
+		ClassicPerlinNoise();
+	}
+	
 	result = CalculateNormals();
 	if (!result)
 	{
@@ -421,6 +433,27 @@ bool Terrain::Generate(ID3D11Device* device)
 	if (!result)
 	{
 		return false;
+	}
+}
+
+void Terrain::ClassicPerlinNoise()
+{
+	int index;
+
+	for (int j = 0; j < m_terrainHeight; j++)
+	{
+		for (int i = 0; i < m_terrainWidth; i++)
+		{
+			index = (m_terrainHeight * j) + i;
+
+			double res = classicPerlinNoise.Noise(i * m_scale + m_offset,
+				j * m_scale + m_offset
+				, 0);
+
+			m_heightMap[index].x = (float)i;
+			m_heightMap[index].y = m_maxHeight * res;
+			m_heightMap[index].z = (float)j;
+		}
 	}
 }
 
@@ -549,6 +582,16 @@ float* Terrain::GetWavelength()
 float* Terrain::GetMaxHeight()
 {
 	return &m_maxHeight;
+}
+
+float* Terrain::GetScale()
+{
+	return &m_scale;
+}
+
+float* Terrain::GetOffset()
+{
+	return &m_offset;
 }
 
 float* Terrain::GetAmplitude()

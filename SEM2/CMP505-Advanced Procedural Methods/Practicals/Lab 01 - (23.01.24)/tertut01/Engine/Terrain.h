@@ -1,4 +1,5 @@
 #pragma once
+#include "ClassicPerlinNoiseAlgorithm.h"
 
 using namespace DirectX;
 
@@ -33,6 +34,8 @@ public:
 
 	float* GetAmplitude();
 	float* GetMaxHeight();
+	float* GetScale();
+	float* GetOffset();
 
 private:
 	bool CalculateNormals();
@@ -42,17 +45,20 @@ private:
 	void RenderBuffers(ID3D11DeviceContext*);
 	void Faulting();
 	void GenerateWaves();
+	void ClassicPerlinNoise();
 
 private:
 	bool m_terrainGeneratedToggle;
 	int m_terrainWidth, m_terrainHeight;
 	ID3D11Buffer * m_vertexBuffer, *m_indexBuffer;
 	int m_vertexCount, m_indexCount;
-	float m_frequency, m_amplitude, m_wavelength, m_maxHeight;
+	float m_frequency, m_amplitude, m_wavelength, m_maxHeight, m_scale, m_offset;
 	HeightMapType* m_heightMap;
 
 	//arrays for our generated objects Made by directX
 	std::vector<VertexPositionNormalTexture> preFabVertices;
 	std::vector<uint16_t> preFabIndices;
+
+	ClassicPerlinNoiseAlgorithm classicPerlinNoise;
 };
 

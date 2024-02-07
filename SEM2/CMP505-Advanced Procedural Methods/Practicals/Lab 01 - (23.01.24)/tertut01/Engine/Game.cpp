@@ -417,6 +417,7 @@ void Game::SetupGUI()
 	ImGui::RadioButton("Random Height Field", &e, 1);
 	ImGui::RadioButton("Faulting", &e, 2);
 	ImGui::RadioButton("Particle Deposition", &e, 3);
+	ImGui::RadioButton("Classic Perlin Noise", &e, 4);
 
 	ImGui::NewLine();
 	ImGui::Separator();
@@ -432,10 +433,12 @@ void Game::SetupGUI()
 		ImGui::SliderFloat("Wavelength",		m_Terrain.GetWavelength(), 0.0f, 1.0f);
 		// ImGui::End();
 	}
-	else if(e==1)
+	else if(e==1 || e==4)
 	{
 		// ImGui::Begin("Random Height Parameters");
 		ImGui::SliderFloat("Max Height",		m_Terrain.GetMaxHeight(), 1.0f, 50.0f);
+		ImGui::SliderFloat("Scale",		m_Terrain.GetScale(), 0.001f, 0.5f);
+		ImGui::SliderFloat("Offset",		m_Terrain.GetOffset(), 0.0f, 1.0f);
 		// ImGui::End();
 	}
 
