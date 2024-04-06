@@ -1,5 +1,6 @@
 #pragma once
 #include "ClassicPerlinNoiseAlgorithm.h"
+#include "SimplexNoiseAlgorithm.h"
 
 using namespace DirectX;
 
@@ -36,6 +37,7 @@ public:
 	float* GetMaxHeight();
 	float* GetScale();
 	float* GetOffset();
+	int* GetSetSeed(int seed = NULL);
 
 private:
 	bool CalculateNormals();
@@ -46,6 +48,7 @@ private:
 	void Faulting();
 	void GenerateWaves();
 	void ClassicPerlinNoise();
+	void SimplexNoise();
 
 private:
 	bool m_terrainGeneratedToggle;
@@ -53,6 +56,7 @@ private:
 	ID3D11Buffer * m_vertexBuffer, *m_indexBuffer;
 	int m_vertexCount, m_indexCount;
 	float m_frequency, m_amplitude, m_wavelength, m_maxHeight, m_scale, m_offset;
+	int m_seed;
 	HeightMapType* m_heightMap;
 
 	//arrays for our generated objects Made by directX
@@ -60,5 +64,6 @@ private:
 	std::vector<uint16_t> preFabIndices;
 
 	ClassicPerlinNoiseAlgorithm classicPerlinNoise;
+	SimplexNoiseAlgorithm simplexNoise;
 };
 

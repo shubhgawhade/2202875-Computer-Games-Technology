@@ -28,7 +28,7 @@ float4 main(InputType input) : SV_TARGET
     float	lightIntensity;
     float4	color;
 
-	if(input.position3D.y < .1f)
+	// if(input.position3D.y > .3f)
 	{
 		// Invert the light direction for calculations.
 		lightDir = normalize(input.position3D - lightPosition);
@@ -42,13 +42,20 @@ float4 main(InputType input) : SV_TARGET
 
 		// Sample the pixel color from the texture using the sampler at this texture coordinate location.
 		textureColor = shaderTexture.Sample(SampleType, input.tex);
-		return color * textureColor;
+		if(input.position3D.y > .3f)
+		{
+			return color *= lerp(textureColor.rgba, float4(1,1,1,1).rgba, (input.position3D.y-0.3f)*2.0f);
+		}
+		else
+		{
+			return textureColor * color;
+		}
 	}
-	else if(input.position3D.y < .5f && input.position3D.y > .3f)
-	{
-		return color;
-	}
+	// else if(input.position3D.y < .5f && input.position3D.y > .3f)
+	// {
+	// 	return color;
+	// }
 
-	return color = float4(1,0,0,1);
+	// return color = float4(1,0,0,1);
 }
 

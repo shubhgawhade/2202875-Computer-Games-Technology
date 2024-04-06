@@ -185,6 +185,7 @@
     <ClInclude Include="ReadData.h" />
     <ClInclude Include="RenderTexture.h" />
     <ClInclude Include="Shader.h" />
+    <ClInclude Include="SimplexNoiseAlgorithm.h" />
     <ClInclude Include="StepTimer.h" />
     <ClInclude Include="Terrain.h" />
   </ItemGroup>
@@ -211,6 +212,7 @@
     </ClCompile>
     <ClCompile Include="RenderTexture.cpp" />
     <ClCompile Include="Shader.cpp" />
+    <ClCompile Include="SimplexNoiseAlgorithm.cpp" />
     <ClCompile Include="Terrain.cpp" />
   </ItemGroup>
   <ItemGroup>
